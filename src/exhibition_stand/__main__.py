@@ -1,3 +1,4 @@
+import socket
 import sys
 import threading
 import time
@@ -46,18 +47,25 @@ def main() -> None:
     start_backup_scheduler(config.csv_path, config.backup_dir, config.backup_interval_minutes)
 
     app = create_app(config)
-    url = f"http://127.0.0.1:{config.port}"
+    local_url = f"http://127.0.0.1:{config.port}"
+
+    try:
+        lan_ip = socket.gethostbyname(socket.gethostname())
+    except OSError:
+        lan_ip = "unavailable"
+    lan_url = f"http://{lan_ip}:{config.port}"
 
     threading.Thread(
-        target=_open_browser, args=(url, config.fullscreen), daemon=True
+        target=_open_browser, args=(local_url, config.fullscreen), daemon=True
     ).start()
 
-    print(f"Apitronix Exhibition Stand  →  {url}")
+    print(f"Apitronix Exhibition Stand  →  {local_url}")
+    print(f"Network (other devices)     →  {lan_url}")
     print(f"Registrations CSV           →  {config.csv_path}")
     print(f"CSV backup folder           →  {config.backup_dir}")
     print(f"Press Ctrl+C to stop\n")
 
-    app.run(host="127.0.0.1", port=config.port, debug=False, use_reloader=False)
+    app.run(host="0.0.0.0", port=config.port, debug=False, use_reloader=False)
 
 
 if __name__ == "__main__":

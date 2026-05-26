@@ -15,6 +15,6 @@ backup_dir = "backups"
 backup_interval_minutes = 60
 
 [offer]
-title = "Free Development Board"
+title = "Free Dev. Board"
 subtitle = "Be among the first to get your hands on the Apitronix dev kit — free for early adopters."
 cta = "Press any key to register your interest"

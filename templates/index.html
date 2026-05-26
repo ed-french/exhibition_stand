@@ -21,12 +21,15 @@
 
   <!-- ═══════════════════ ADVERTISING VIEW ═══════════════════ -->
   <div id="advertising-view" class="view">
+    <img id="ad-board-image"
+         src="{{ url_for('static', filename='images/dev_board_fading.png') }}"
+         alt="">
     <canvas id="particle-canvas"></canvas>
     <div id="ad-content">
       <img class="ad-logo"
-           src="{{ url_for('static', filename='images/logo_darkbg.svg') }}"
+           src="{{ url_for('static', filename='images/logo.svg') }}"
            alt="Apitronix Semiconductor">
-      <div class="ad-headline" id="offer-title"></div>
+      <div class="ad-title" id="offer-title"></div>
       <div class="ad-subheadline" id="offer-subtitle"></div>
       <div class="ad-cta" id="offer-cta"></div>
     </div>
@@ -38,7 +41,7 @@
       <div class="form-card">
         <div class="form-header">
           <img class="form-logo"
-               src="{{ url_for('static', filename='images/logo_darkbg.svg') }}"
+               src="{{ url_for('static', filename='images/logo.svg') }}"
                alt="Apitronix Semiconductor">
           <h1 id="form-title"></h1>
           <p id="form-subtitle"></p>
