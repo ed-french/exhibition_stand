@@ -1,0 +1,18 @@
+[project]
+name = "exhibition-stand"
+version = "0.1.0"
+description = "Apitronix exhibition stand — registration kiosk"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.1.0",
+]
+
+[project.scripts]
+exhibition-stand = "exhibition_stand.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/exhibition_stand"]

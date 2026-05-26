@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apitronix — Free Dev Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script>
+    window.APP_CONFIG = {
+      idleTimeoutMs:  {{ config.idle_timeout_ms }},
+      secretExitKey:  {{ config.secret_exit_key | tojson }},
+      offerTitle:     {{ config.offer_title | tojson }},
+      offerSubtitle:  {{ config.offer_subtitle | tojson }},
+      offerCta:       {{ config.offer_cta | tojson }},
+    };
+  </script>
+</head>
+<body>
+
+  <!-- ═══════════════════ ADVERTISING VIEW ═══════════════════ -->
+  <div id="advertising-view" class="view">
+    <canvas id="particle-canvas"></canvas>
+    <div id="ad-content">
+      <img class="ad-logo"
+           src="{{ url_for('static', filename='images/logo_darkbg.svg') }}"
+           alt="Apitronix Semiconductor">
+      <div class="ad-headline" id="offer-title"></div>
+      <div class="ad-subheadline" id="offer-subtitle"></div>
+      <div class="ad-cta" id="offer-cta"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ REGISTRATION VIEW ══════════════════ -->
+  <div id="registration-view" class="view hidden">
+    <div class="form-backdrop">
+      <div class="form-card">
+        <div class="form-header">
+          <img class="form-logo"
+               src="{{ url_for('static', filename='images/logo_darkbg.svg') }}"
+               alt="Apitronix Semiconductor">
+          <h1 id="form-title"></h1>
+          <p id="form-subtitle"></p>
+        </div>
+
+        <form id="registration-form" novalidate autocomplete="off">
+          <div class="field-group">
+            <input type="text" id="name" name="name"
+                   placeholder="Full Name *" autocomplete="name">
+          </div>
+          <div class="field-group">
+            <input type="text" id="company" name="company"
+                   placeholder="Company" autocomplete="organization">
+          </div>
+          <div class="field-group">
+            <input type="email" id="email" name="email"
+                   placeholder="Email Address *" autocomplete="email">
+          </div>
+          <div class="field-group">
+            <textarea id="application_area" name="application_area"
+                      placeholder="Application area — what will you use the board for?"
+                      rows="3"></textarea>
+          </div>
+          <div class="field-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="keep_updated" name="keep_updated" checked>
+              Keep me up to date about Apitronix products
+            </label>
+          </div>
+
+          <div id="form-error" class="error-msg hidden"></div>
+
+          <button type="submit" class="submit-btn">
+            Register My Interest
+          </button>
+        </form>
+
+        <div class="form-footer">Press Escape to cancel</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SUCCESS VIEW ═══════════════════════ -->
+  <div id="success-view" class="view hidden">
+    <div class="success-content">
+      <div class="success-tick">✓</div>
+      <h2 id="success-name">Thank you!</h2>
+      <p>We'll be in touch when your free dev board is ready.</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

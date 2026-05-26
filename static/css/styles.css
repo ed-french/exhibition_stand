@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Red+Hat+Display:wght@400;500;700&display=swap');
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Apitronix design tokens (dark / OLED variant) ──────────────────────── */
+:root {
+  /* Brand palette */
+  --plum:         #5c426e;   /* primary brand */
+  --plum-light:   #a68ab9;   /* secondary / glow */
+  --green-dark:   #42601e;
+  --green-light:  #71a340;
+
+  /* Dark-mode surface */
+  --bg:           #07040a;   /* near-black, plum-tinted — ideal on OLED */
+  --card-bg:      rgba(12, 8, 18, 0.94);
+  --card-border:  rgba(166, 138, 185, 0.2);
+
+  /* Text */
+  --text:         #f0ecf5;
+  --text-dim:     rgba(240, 236, 245, 0.55);
+
+  /* Accent colours used in the UI */
+  --accent:       #a68ab9;   /* light plum — glows well on dark */
+  --accent-dim:   rgba(166, 138, 185, 0.5);
+  --accent-glow:  rgba(166, 138, 185, 0.22);
+  --green:        #71a340;   /* CTA / submit button */
+  --green-glow:   rgba(113, 163, 64, 0.35);
+
+  /* Form */
+  --input-bg:     rgba(255, 255, 255, 0.04);
+  --input-border: rgba(166, 138, 185, 0.3);
+
+  /* Feedback */
+  --error:        #ff4d6d;
+  --success:      #71a340;
+
+  /* Typography */
+  --font-body:    'Red Hat Display', system-ui, sans-serif;
+  --font-heading: 'Oxanium', system-ui, sans-serif;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Shared view layer ──────────────────────────────────────────────────── */
+.view {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.hidden { display: none !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ADVERTISING VIEW
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#advertising-view { background: var(--bg); }
+
+#particle-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+
+#ad-content {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  pointer-events: none;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* Logo image */
+.ad-logo {
+  height: clamp(52px, 8vw, 100px);
+  width: auto;
+  filter: drop-shadow(0 0 18px rgba(166, 138, 185, 0.5));
+  animation: logo-breathe 4s ease-in-out infinite;
+  margin-bottom: 0.2em;
+}
+
+@keyframes logo-breathe {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(166, 138, 185, 0.45))
+                     drop-shadow(0 0 40px rgba(92, 66, 110, 0.3)); }
+  50%       { filter: drop-shadow(0 0 32px rgba(166, 138, 185, 0.8))
+                     drop-shadow(0 0 80px rgba(92, 66, 110, 0.5))
+                     drop-shadow(0 0 140px rgba(166, 138, 185, 0.15)); }
+}
+
+.ad-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  margin: 1.6rem 0 0.8rem;
+}
+
+.ad-subheadline {
+  font-size: clamp(0.85rem, 1.8vw, 1.25rem);
+  color: var(--text-dim);
+  max-width: 560px;
+  line-height: 1.65;
+  margin-bottom: 2.8rem;
+}
+
+.ad-cta {
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 1.3vw, 0.95rem);
+  color: var(--text);
+  background: rgba(166, 138, 185, 0.08);
+  border: 1px solid var(--accent-dim);
+  border-radius: 50px;
+  padding: 0.8rem 2.6rem;
+  letter-spacing: 0.1rem;
+  animation: cta-breathe 2.8s ease-in-out infinite;
+}
+
+@keyframes cta-breathe {
+  0%, 100% {
+    box-shadow: 0 0 16px var(--accent-glow);
+    border-color: rgba(166, 138, 185, 0.38);
+  }
+  50% {
+    box-shadow: 0 0 36px var(--accent-glow), 0 0 70px rgba(92, 66, 110, 0.15);
+    border-color: rgba(166, 138, 185, 0.75);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REGISTRATION VIEW
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.form-backdrop {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  background: radial-gradient(ellipse at 50% 40%,
+    rgba(92, 66, 110, 0.1) 0%, var(--bg) 70%);
+}
+
+.form-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow:
+    0 0 60px rgba(92, 66, 110, 0.1),
+    0 30px 70px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  animation: card-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Logo in form header */
+.form-logo {
+  height: 32px;
+  width: auto;
+  margin-bottom: 0.8rem;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+.form-header h1 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.form-header p { color: var(--text-dim); font-size: 0.9rem; }
+
+/* Fields */
+.field-group { margin-bottom: 0.9rem; }
+
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 9px;
+  padding: 0.82rem 1rem;
+  color: var(--text);
+  font-size: 0.97rem;
+  font-family: var(--font-body);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field-group input:focus,
+.field-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.field-group input.invalid {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.18);
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder { color: rgba(240, 236, 245, 0.28); }
+
+/* Checkbox */
+.checkbox-group { padding: 0.15rem 0; }
+.checkbox-label {
+  display: flex; align-items: center; gap: 0.7rem;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  user-select: none;
+}
+.checkbox-label input[type="checkbox"] {
+  width: 17px; height: 17px;
+  accent-color: var(--green);
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* Error banner */
+.error-msg {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  background: rgba(255, 77, 109, 0.08);
+  border-radius: 7px;
+  border: 1px solid rgba(255, 77, 109, 0.28);
+}
+
+/* Submit — green, matching Apitronix's btn-green */
+.submit-btn {
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.95rem;
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+  cursor: pointer;
+  box-shadow: 0 4px 22px var(--green-glow);
+  transition: opacity 0.18s, box-shadow 0.18s, transform 0.1s;
+}
+.submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 6px 32px rgba(113, 163, 64, 0.55);
+}
+.submit-btn:active:not(:disabled) { transform: scale(0.99); }
+.submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.form-footer {
+  text-align: center;
+  margin-top: 1.1rem;
+  color: rgba(240, 236, 245, 0.2);
+  font-size: 0.78rem;
+  letter-spacing: 0.04rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SUCCESS VIEW
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#success-view { background: var(--bg); }
+
+.success-content {
+  text-align: center;
+  animation: success-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes success-in {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.success-tick {
+  font-size: clamp(4rem, 10vw, 7rem);
+  line-height: 1;
+  color: var(--green);
+  text-shadow: 0 0 40px var(--green-glow);
+  margin-bottom: 1rem;
+  animation: tick-bounce 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes tick-bounce {
+  0%   { transform: scale(0);    opacity: 0; }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+.success-content h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.success-content p { color: var(--text-dim); font-size: 1.05rem; }
