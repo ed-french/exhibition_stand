@@ -1,1 +1,17 @@
-backups/*
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# UV / build
+.python-version
+dist/
+*.egg-info/
+
+# Registration data — personal data, never commit
+registrations.csv
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
